@@ -40,15 +40,16 @@ bool* BinAdder::getBitArray(int no)
 
 void BinAdder::deleteOrCreateNums(int mode, int which)
 {
+    bool dbg=false;
     if(which<0)
     {
         for(int i=0; i<howManyNums; i++)
         {
-            printf("deleting number [%d]...\n", i);
+            if(dbg) printf("deleting number [%d]...\n", i);
             if(bits[i] && (mode==1 || mode==3)) delete [] (bits[i]);
             if(mode==2 || mode==3)
             {
-                printf("Creating number [%d]...\n", i);
+                if(dbg) printf("Creating number [%d]...\n", i);
                 bits[i] = new bool[bitLenght];
             }
         }
@@ -90,6 +91,21 @@ void BinAdder::reverseBitArray(int no)
     if(no >= howManyNums || no<0) return;
 
     reverseBitArrayFromGiven(&(bits[no]), bitLenght);
+}
+
+void BinAdder::inverseBits(int no)
+{
+    if(no >= howManyNums || no<0) return;
+
+    inverseBitsFromGiven(&(bits[no]), bitLenght);
+}
+
+void BinAdder::inverseBitsFromGiven(bool **bits, int lenght)
+{
+    for(int i=0; i<lenght; i++)
+    {
+        *(*bits+i) = !(*(*bits+i));
+    }
 }
 
 void BinAdder::showNumberBits(int no, int mode)

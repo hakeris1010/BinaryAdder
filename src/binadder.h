@@ -1,4 +1,4 @@
-/* Swaggy Binary Adder v0.2 by H3nt4iBoY
+/* Swaggy Binary Adder v0.3 by H3nt4iBoY
 
 - Converts any type to binary array
 - Converts binary arrays to types
@@ -41,6 +41,8 @@ public:
     bool* addNumbersReturn(int no1, int no2);
     bool addBits(bool b1, bool b2, bool &q);
     void showBitsFromGiven(bool bits[], int lenght, int mode=0);
+    void inverseBits(int no);
+    void inverseBitsFromGiven(bool **bits, int lenght);
 
     void assignBitsFromUINT_8(uint8_t numb, int no); //Legacy trons
     void assignBitsToArrayUINT_8(uint8_t numb, bool arr[], int arrLenght);
@@ -53,7 +55,7 @@ public:
     void assignBitsToArrayFromType(T numb, bool arr[], int arrLenght);
 
     template <typename T>
-    T returnBitsAsValue(int no, T ta);
+    T returnBitsAsValue(int no);
 };
 
 //Implementation section
@@ -88,8 +90,10 @@ void BinAdder::assignBitsToArrayFromType(T numb, bool arr[], int arrLenghtInBits
 }
 
 template <typename T>
-T BinAdder::returnBitsAsValue(int no, T ta)
+T BinAdder::returnBitsAsValue(int no) //call this as returnBitsAsValue<type>(arg)
 {
+    bool dbg=false;
+
     if(no >= howManyNums || no<0) return (T)0;
     if(bitLenght%8 != 0) return (T)1;
     if(sizeof(T) != bitLenght/8) return (T)2;
@@ -98,25 +102,25 @@ T BinAdder::returnBitsAsValue(int no, T ta)
 
     for(int i=0; i<bitLenght/8; i++) bytes[i]=0;
 
-    printf("\nTrying to convert these bits to value:\n");
-    showNumberBits(no);
+    if(dbg) printf("\nTrying to convert these bits to value:\n");
+    if(dbg) showNumberBits(no);
 
     for(int i=0; i<bitLenght/8; i++)
     {
-        printf("Byte no.%d before: ", i);
+        if(dbg) printf("Byte no.%d before: ", i);
         bool barr[8];
         assignBitsToArrayUINT_8(bytes[i], barr, 8);
-        showBitsFromGiven(barr,8);
-        printf("\n");
+        if(dbg) showBitsFromGiven(barr,8);
+        if(dbg) printf("\n");
 
         for(int j=0; j<8; j++)
         {
             bytes[i] = bytes[i] | (( (uint8_t)bits[no][i*8 + j]) << j );
         }
 
-        printf("Byte no.%d after : ", i);
+        if(dbg) printf("Byte no.%d after : ", i);
         assignBitsToArrayUINT_8(bytes[i], barr, 8);
-        showBitsFromGiven(barr,8);
+        if(dbg) showBitsFromGiven(barr,8);
     }
 
     T retval = (T)0;
