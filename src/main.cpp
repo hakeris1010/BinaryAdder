@@ -3,17 +3,11 @@
 #include <stdio.h>
 #include "binadder.h"
 
-int main()
+typedef int32_t current;
+typedef uint32_t ucurrent;
+
+void makeNegativeCode(current u1, BinAdder bad)
 {
-    printf("Juz' testin', noob!\n\n");
-
-    typedef int8_t current;
-    typedef uint8_t ucurrent;
-
-    BinAdder bad(sizeof(current)*8);
-
-    current u1=127;
-
     printf("u1: %d (%d)\n  ", u1, (ucurrent)u1);
     bad.assignBitsFromType(u1, 1);
     bad.showNumberBits(1);
@@ -23,7 +17,11 @@ int main()
     bad.inverseBits(1);
 
     bad.showNumberBits(1);
-    printf("+               1\n  ---------------\n  ");
+    printf("+");
+    for(int i=0; i<(sizeof(current)*8*2)-1; i++) printf(" ");
+    printf("1\n  ");
+    for(int i=0; i<(sizeof(current)*8*2)-1; i++) printf("-");
+    printf("\n  ");
 
     bad.assignBitsFromType((current)1, 2);
     bad.addNumbers(1,2,0);
@@ -32,6 +30,20 @@ int main()
     current u2=bad.returnBitsAsValue<current>(0);
 
     printf("\nu2: %d (%d)\n", u2, (ucurrent)u2);
+}
+
+int main()
+{
+    printf("Juz' testin', noob!\n\n");
+
+    BinAdder bad(sizeof(current)*8);
+
+    current u1=1;
+    bad.assignBitsFromType(u1,0);
+    bad.reverseBitArray(0);
+    u1 = bad.returnBitsAsValue<current>(0);
+
+    printf("reversed: %d\n", u1);
 
     /*printf("\nu1: %d\nbits: ", u1);
     bad.assignBitsFromType(u1, 0);
